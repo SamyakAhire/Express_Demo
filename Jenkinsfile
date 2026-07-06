@@ -18,7 +18,7 @@ pipeline {
 		stage('image pushing') {
 			steps {
 				withCredentials([usernamePassword(
-					credentialsId: 'dockerhub'
+					credentialId: 'dockerhub',
 					usernameVariable: 'DOCKER_USER',
 					passwordVariable: 'DOCKER_PASS'
 					)]) {		
@@ -28,6 +28,7 @@ pipeline {
 						echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin						
 						docker push samyakahire/devops-project:${BUILD_NUMBER}
 					'''
+				}
 			}
 		}
 
