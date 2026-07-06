@@ -17,8 +17,17 @@ pipeline {
 		
 		stage('image pushing') {
 			steps {
-				echo 'Docker image to image hub'
-				sh 'docker push samyakahire/devops-project:${BUILD_NUMBER}'
+				withCredentials([usernamePassword(
+					credentialsId: 'dockerhub'
+					usernameVariable: 'DOCKER_USER',
+					passwordVariable: 'DOCKER_PASS'
+					)]) {		
+
+					echo 'Docker image to image hub'
+					sh '''
+						echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin						
+						docker push samyakahire/devops-project:${BUILD_NUMBER}
+					'''
 			}
 		}
 
