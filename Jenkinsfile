@@ -35,7 +35,10 @@ pipeline {
 		stage('k8s phase') {
 			steps {
 				echo 'Creating the deployment'
-				sh 'kubectl apply -f project.yml'
+				sh '''
+					kubectl set image deployment/express-demo \
+					express-demo=samyakahire/devops-project:${BUILD_NUMBER}
+				   '''
 			}
 		}
 	}	
