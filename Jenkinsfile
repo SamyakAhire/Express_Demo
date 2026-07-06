@@ -2,24 +2,31 @@ pipeline {
 	agent any
 	stages {
 		stage('Build') {
-			echo 'Building Phase'
-			sh 'npm install'	
+			steps {
+				echo 'Building Phase'
+				sh 'npm install'	
+			}
 		}
 			
 		stage('image building') {
-			echo 'Docker Image building'
-			sh 'docker build -t samyakahire/devops-project:${BUILD_NUMBER} .'
+			steps {
+				echo 'Docker Image building'
+				sh 'docker build -t samyakahire/devops-project:${BUILD_NUMBER} .'
+			}
 		}
 		
 		stage('image pushing') {
-			echo 'Docker image to image hub'
-			sh 'docker push samyakahire/devops-project:${BUILD_NUMBER}'
+			steps {
+				echo 'Docker image to image hub'
+				sh 'docker push samyakahire/devops-project:${BUILD_NUMBER}'
+			}
 		}
 
 		stage('k8s phase') {
-		
-			echo 'Creating the deployment'
-			sh 'kubectl apply -f project.yml'
+			steps {
+				echo 'Creating the deployment'
+				sh 'kubectl apply -f project.yml'
+			}
 		}
 	}	
 }
